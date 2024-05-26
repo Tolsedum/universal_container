@@ -1,10 +1,10 @@
-#include "Conteiner.hpp"
-#include "ConfigReader.hpp"
+#include "registry/Conteiner.hpp"
+#include "registry/ConfigReader.hpp"
 
 int main(){
-    ConfigReader configReader;
+    registry::ConfigReader configReader;
     configReader.loadConfigFile("settings_test.conf");
     std::string name_params{"TEST"};
-    std::cout<< name_params  << ": "<< Container::getElement<std::string>(name_params) <<std::endl;
+    std::cout<< name_params  << ": "<< registry::Container::getElement<std::string>(name_params) <<std::endl;
     std::cout << "Hello world!" << std::endl;
 }
