@@ -1,6 +1,38 @@
 #ifndef C6F35E3E_DBD0_44B1_BDD9_771CB2E984FB
 #define C6F35E3E_DBD0_44B1_BDD9_771CB2E984FB
 
+/**
+ *  __________________________________________
+ * |                                          |
+ * |   ╭━━━━┳━━━┳╮╱╱╭━━━┳━━━┳━━━┳╮╱╭┳━╮╭━╮    |
+ * |   ┃╭╮╭╮┃╭━╮┃┃╱╱┃╭━╮┃╭━━┻╮╭╮┃┃╱┃┃┃╰╯┃┃    |
+ * |   ╰╯┃┃╰┫┃╱┃┃┃╱╱┃╰━━┫╰━━╮┃┃┃┃┃╱┃┃╭╮╭╮┃    |
+ * |   ╱╱┃┃╱┃┃╱┃┃┃╱╭╋━━╮┃╭━━╯┃┃┃┃┃╱┃┃┃┃┃┃┃    |
+ * |   ╱╱┃┃╱┃╰━╯┃╰━╯┃╰━╯┃╰━━┳╯╰╯┃╰━╯┃┃┃┃┃┃    |
+ * |   ╱╱╰╯╱╰━━━┻━━━┻━━━┻━━━┻━━━┻━━━┻╯╰╯╰╯    |
+ * |__________________________________________|
+ * |                                          |
+ * | Permission is hereby granted, free of    |
+ * | charge, to any person obtaining a copy of|
+ * | of this software and accompanying files, |
+ * | to use them without restriction,         |
+ * | including, without limitation, the       |
+ * | rights to use, copy, modify, merge,      |
+ * | publish, distribute, sublicense and/or   |
+ * | sell copies of the software. The authors |
+ * | or copyright holders shall not be liable |
+ * | for any claims, damages or other         |
+ * | liability, whether in contract, tort or  |
+ * | otherwise, arising out of or in          |
+ * | connection with the software or your use |
+ * | or other dealings with the software.     |
+ * |__________________________________________|
+ * |   website: tolsedum.ru                   |
+ * |   email: tolsedum@gmail.com              |
+ * |   email: tolsedum@yandex.ru              |
+ * |__________________________________________|
+ */
+
 #include "functions.hpp"
 
 namespace registry{
@@ -27,6 +59,7 @@ namespace registry{
 
         template<class Type>
         static bool checkEmptyElements(std::string settings_key, Type value);
+
     public:
 
         /**
@@ -64,13 +97,41 @@ namespace registry{
     inline bool Container::checkEmptyElements(std::string settings_key, int value){
         return !settings_key.empty();
     }
+    template<>
+    inline bool Container::checkEmptyElements(std::string settings_key, long value){
+        return !settings_key.empty();
+    }
+    template<>
+    inline bool Container::checkEmptyElements(std::string settings_key, unsigned long value){
+        return !settings_key.empty();
+    }
+    template<>
+    inline bool Container::checkEmptyElements(std::string settings_key, long long value){
+        return !settings_key.empty();
+    }
+    template<>
+    inline bool Container::checkEmptyElements(std::string settings_key, unsigned long long value){
+        return !settings_key.empty();
+    }
+    template<>
+    inline bool Container::checkEmptyElements(std::string settings_key, float value){
+        return !settings_key.empty();
+    }
+    template<>
+    inline bool Container::checkEmptyElements(std::string settings_key, double value){
+        return !settings_key.empty();
+    }
+    template<>
+    inline bool Container::checkEmptyElements(std::string settings_key, long double value){
+        return !settings_key.empty();
+    }
 
     template <class Type>
     bool Container::addElement(
         std::string settings_key, Type content
     ){
         bool ret_value = true;
-        ufn::trim(settings_key);
+        settings_key = ufn::trim(settings_key);
         if(checkEmptyElements(settings_key, content)){
             conteiner_<Type>[settings_key] = content;
         }else ret_value = false;
