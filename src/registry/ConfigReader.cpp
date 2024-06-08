@@ -56,7 +56,7 @@ void registry::ConfigReader::initAtFractional(std::string name, std::string valu
             if(ufn::has_error_in_converter_function == 2){
                 registry::Container::addElement<std::string>(name, value);
             }else{
-                registry::Container::addElement<long double>(name, double_type );
+                registry::Container::addElement<long double>(name, long_double_type );
             }
         }else{
             registry::Container::addElement<double>(name, double_type);

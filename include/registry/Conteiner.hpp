@@ -90,39 +90,39 @@ namespace registry{
         return !settings_key.empty() && !value.empty();
     }
     template<>
-    inline bool Container::checkEmptyElements(std::string settings_key, bool value){
+    inline bool Container::checkEmptyElements(std::string settings_key, bool){
         return !settings_key.empty();
     }
     template<>
-    inline bool Container::checkEmptyElements(std::string settings_key, int value){
+    inline bool Container::checkEmptyElements(std::string settings_key, int){
         return !settings_key.empty();
     }
     template<>
-    inline bool Container::checkEmptyElements(std::string settings_key, long value){
+    inline bool Container::checkEmptyElements(std::string settings_key, long){
         return !settings_key.empty();
     }
     template<>
-    inline bool Container::checkEmptyElements(std::string settings_key, unsigned long value){
+    inline bool Container::checkEmptyElements(std::string settings_key, unsigned long){
         return !settings_key.empty();
     }
     template<>
-    inline bool Container::checkEmptyElements(std::string settings_key, long long value){
+    inline bool Container::checkEmptyElements(std::string settings_key, long long){
         return !settings_key.empty();
     }
     template<>
-    inline bool Container::checkEmptyElements(std::string settings_key, unsigned long long value){
+    inline bool Container::checkEmptyElements(std::string settings_key, unsigned long long){
         return !settings_key.empty();
     }
     template<>
-    inline bool Container::checkEmptyElements(std::string settings_key, float value){
+    inline bool Container::checkEmptyElements(std::string settings_key, float){
         return !settings_key.empty();
     }
     template<>
-    inline bool Container::checkEmptyElements(std::string settings_key, double value){
+    inline bool Container::checkEmptyElements(std::string settings_key, double){
         return !settings_key.empty();
     }
     template<>
-    inline bool Container::checkEmptyElements(std::string settings_key, long double value){
+    inline bool Container::checkEmptyElements(std::string settings_key, long double){
         return !settings_key.empty();
     }
 
