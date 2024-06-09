@@ -69,7 +69,7 @@ namespace registry{
          * @return T settings object (string, vector, map ...)
         */
         template<class T>
-        static T getElement(std::string settings_key);
+        static const T& getElement(std::string settings_key);
 
         /**
          * @brief Add T object in conteiner
@@ -140,24 +140,11 @@ namespace registry{
     }
 
     template <class T>
-    inline T Container::getElement(std::string settings_key){
-        static T _ret_value;
-        static std::string _key_name;
-        T ret_str;
-
-        if(_key_name != settings_key){
-            if(auto search = conteiner_<T>.find(settings_key);
-                search != conteiner_<T>.end()
-            ){
-                _ret_value = search->second;
-                ret_str = _ret_value;
-                _key_name = settings_key;
-            }
-        }else if(_key_name == settings_key){
-            ret_str = _ret_value;
-        }
-        return ret_str;
+    inline const T& Container::getElement(std::string settings_key){
+        auto search = conteiner_<T>.find(settings_key);
+        return search->second;
     }
+
 
 
     //*---------------- END Template realization ---------------*/

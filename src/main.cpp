@@ -15,17 +15,9 @@ int main(){
             std::cout<< "  " << y << std::endl;
         }
     }
+    if(data.empty()){
+        std::cout<< "Is empty" << std::endl;
+    }
 
-
-
-
-
-    // std::cout
-    //     << "strToFloat: " << ufn::strToInt(test)
-    //     << std::endl
-    //     << " Error: " << ufn::has_error_in_converter_function << " " << ufn::error_in_converter_function
-    //     << std::endl
-    //     << " Size: " << sizeof(ufn::strToFloat(test))
-    // << std::endl;
     return 0;
 }
