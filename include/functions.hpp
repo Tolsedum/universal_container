@@ -257,7 +257,8 @@ namespace ufn{
     */
     template<class TConteiner, class TValue>
     bool inArray (TConteiner array, TValue value){
-        return std::find(array.begin(), array.end(), value) != array.end();
+        return std::find(array.begin(), array.end(), value)
+            != array.end();
     }
  };
 #endif // !FUNCTIONS_HPP

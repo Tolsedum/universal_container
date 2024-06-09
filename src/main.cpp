@@ -5,12 +5,18 @@ int main(){
     registry::ConfigReader configReader;
     configReader.loadConfigFile("settings_test.conf");
 
-    std::string name_params{"PORT"};
-    std::cout
-        << name_params  << ": "<< registry::Container::getElement<std::string>(name_params)
-        << std::endl
-        << name_params  << ": "<< registry::Container::getElement<int>(name_params)
-        << std::endl;
+    std::string name_params{"MIME_TYPES"};
+    auto data = registry::Container::getElement
+        <std::map<std::string, std::vector<std::string>>>(name_params);
+
+    for (auto &&i : data){
+        std::cout<< i.first << ": " << std::endl;
+        for (auto &&y : i.second){
+            std::cout<< "  " << y << std::endl;
+        }
+    }
+
+
 
 
 

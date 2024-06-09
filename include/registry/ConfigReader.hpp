@@ -81,6 +81,7 @@ namespace registry{
         void loadConfigFile(std::string settings_path);
         void initAtIntager(std::string name, std::string value);
         void initAtFractional(std::string name, std::string value);
+        void initAtMapContainer(std::string name, std::string value);
 
     };
 }

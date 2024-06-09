@@ -18,7 +18,9 @@ registry::ReturnSettingsLine registry::ConfigReader::getContent(
     return ReturnSettingsLine(name, value);
 }
 
-void registry::ConfigReader::initAtIntager(std::string name, std::string value){
+void registry::ConfigReader::initAtIntager(
+    std::string name, std::string value
+){
     int int_type = ufn::strToInt(value);
     if(ufn::has_error_in_converter_function == 2){
         long long_type = ufn::strToLong(value);
@@ -47,7 +49,9 @@ void registry::ConfigReader::initAtIntager(std::string name, std::string value){
     }
 }
 
-void registry::ConfigReader::initAtFractional(std::string name, std::string value){
+void registry::ConfigReader::initAtFractional(
+    std::string name, std::string value
+){
     float float_type = ufn::strToFloat(value);
     if(ufn::has_error_in_converter_function == 2){
         double double_type = ufn::strToDouble(value);
@@ -66,16 +70,95 @@ void registry::ConfigReader::initAtFractional(std::string name, std::string valu
     }
 }
 
+void registry::ConfigReader::initAtMapContainer(
+    std::string name, std::string value
+){
+    if(value.empty() || name.empty()){
+        return;
+    }
+    std::map<std::string, std::vector<std::string>> content;
+    std::string elem_name, v;
+    std::vector<std::string> elem_valu;
+    bool set_value = false;
+    for (auto &&c : value){
+        if(c == ':'){
+            set_value = true;
+            continue;
+        }else if(c == '[' || c == ']'){
+            if(c == ']'){
+                if(!v.empty()){
+                    elem_valu.push_back(v);
+                    v.clear();
+                }
+                content.insert(
+                    std::pair<std::string, std::vector<std::string>>
+                    {elem_name, elem_valu}
+                );
+                elem_name.clear();
+                elem_valu.clear();
+                set_value = false;
+            }
+            continue;
+        }
+        if(!ufn::inArray
+            <std::vector<char>, char>({'\n', '\r', ' '}, c)
+        ){
+            if(set_value){
+                if(c == ','){
+                    elem_valu.push_back(v);
+                    v.clear();
+                }else{
+                    v.append(1, c);
+                }
+            }else if(c != ','){
+                elem_name.append(1, c);
+            }
+        }
+    }
+    registry::Container::addElement
+        <std::map<std::string, std::vector<std::string>>>
+        (name, content);
+}
 void registry::ConfigReader::loadConfigFile(std::string settings_path){
     std::ifstream i_file(settings_path);
     std::string line;
     if(i_file.is_open()){
+        bool get_settings_content = false;
+        bool is_map = false;
+        std::string content_settings;
         while (getline(i_file, line)){
+            std::size_t pos = line.find("{");
+            if(!get_settings_content && pos != std::string::npos){
+                std::string tmp = line.substr(0, pos);
+                line.erase(0, pos + 1);
+                line = tmp + line;
+                get_settings_content = true;
+            }
+            if(get_settings_content){
+                std::size_t pos = line.find("}");
+                if(pos != std::string::npos){
+                    line.erase(pos);
+                    get_settings_content = false;
+                }
+                content_settings.append(line);
+                if(get_settings_content)
+                    continue;
+                line = content_settings;
+                is_map = true;
+            }
+
             ReturnSettingsLine settingsParam =
                 getContent(line);
+
             if(settingsParam.value_.empty())
                 continue;
-            if(settingsParam.value_ == "true"
+
+            if(is_map){
+                registry::ConfigReader::initAtMapContainer(
+                    settingsParam.name_,
+                    settingsParam.value_
+                );
+            }else if(settingsParam.value_ == "true"
                 || settingsParam.value_ == "false"
             ){
                 if(settingsParam.value_ == "true"){
@@ -100,6 +183,7 @@ void registry::ConfigReader::loadConfigFile(std::string settings_path){
                     settingsParam.value_
                 );
             }
+            is_map = false;
         }
     }else
         throw std::runtime_error(
