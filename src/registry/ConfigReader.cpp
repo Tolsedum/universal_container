@@ -5,7 +5,7 @@ registry::ReturnSettingsLine registry::ConfigReader::getContent(
     const std::string &settings_line
 ){
     std::string name;
-    std::string value = ufn::deleteComment(settings_line);
+    std::string value = settings_line;
     if(value.size() > 2){
         size_t pos = value.find('=');
         if(pos != std::string::npos){
@@ -127,6 +127,11 @@ void registry::ConfigReader::loadConfigFile(std::string settings_path){
         bool is_map = false;
         std::string content_settings;
         while (getline(i_file, line)){
+            line = ufn::deleteComment(line);
+            if (line.empty()){
+                continue;
+            }
+
             std::size_t pos = line.find("{");
             if(!get_settings_content && pos != std::string::npos){
                 std::string tmp = line.substr(0, pos);
