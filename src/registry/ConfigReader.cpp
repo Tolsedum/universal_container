@@ -119,6 +119,50 @@ void registry::ConfigReader::initAtMapContainer(
         <std::map<std::string, std::vector<std::string>>>
         (name, content);
 }
+
+void registry::ConfigReader::initAtMap(
+    std::string name, std::string value
+){
+    if(value.empty() || name.empty()){
+        return;
+    }
+    std::map<std::string, std::string> content;
+    std::string elem_name, elem_valu;
+
+    bool set_value = false;
+    for (auto &&c : value){
+        if(c == ':'){
+            set_value = true;
+            continue;
+        }else if(c == ','){
+            content.insert(
+                std::pair<std::string, std::string>
+                {elem_name, elem_valu});
+            elem_name.clear();
+            elem_valu.clear();
+            set_value = false;
+            continue;
+        }
+        if(!ufn::inArray
+            <std::vector<char>, char>({'\n', '\r', ' '}, c)
+        ){
+            if(set_value){
+                elem_valu.append(1, c);
+            }else{
+                elem_name.append(1, c);
+            }
+        }
+    }
+    if(!elem_name.empty() && !elem_valu.empty()){
+        content.insert(
+            std::pair<std::string, std::string>
+            {elem_name, elem_valu});
+    }
+    registry::Container::addElement
+        <std::map<std::string, std::string>>
+        (name, content);
+}
+
 void registry::ConfigReader::loadConfigFile(std::string settings_path){
     std::ifstream i_file(settings_path);
     std::string line;
@@ -159,10 +203,18 @@ void registry::ConfigReader::loadConfigFile(std::string settings_path){
                 continue;
 
             if(is_map){
-                registry::ConfigReader::initAtMapContainer(
-                    settingsParam.name_,
-                    settingsParam.value_
-                );
+                std::size_t pos = settingsParam.value_.find("[");
+                if(pos != std::string::npos){
+                    initAtMapContainer(
+                        settingsParam.name_,
+                        settingsParam.value_
+                    );
+                }else{
+                    initAtMap(
+                        settingsParam.name_,
+                        settingsParam.value_
+                    );
+                }
             }else if(settingsParam.value_ == "true"
                 || settingsParam.value_ == "false"
             ){

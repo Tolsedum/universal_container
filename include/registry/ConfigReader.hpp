@@ -82,6 +82,7 @@ namespace registry{
         void initAtIntager(std::string name, std::string value);
         void initAtFractional(std::string name, std::string value);
         void initAtMapContainer(std::string name, std::string value);
+        void initAtMap(std::string name, std::string value);
 
     };
 }
