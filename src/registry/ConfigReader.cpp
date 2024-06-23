@@ -110,7 +110,7 @@ void registry::ConfigReader::initAtMapContainer(
                 }else{
                     v.append(1, c);
                 }
-            }else if(c != ','){
+            }else if(c != ',' && c != '='){
                 elem_name.append(1, c);
             }
         }
@@ -148,7 +148,7 @@ void registry::ConfigReader::initAtMap(
         ){
             if(set_value){
                 elem_valu.append(1, c);
-            }else{
+            }else if(c != '='){
                 elem_name.append(1, c);
             }
         }
@@ -195,7 +195,7 @@ void registry::ConfigReader::loadConfigFile(std::string settings_path){
                 line = content_settings;
                 is_map = true;
             }
-
+            content_settings.clear();
             ReturnSettingsLine settingsParam =
                 getContent(line);
 
@@ -219,9 +219,13 @@ void registry::ConfigReader::loadConfigFile(std::string settings_path){
                 || settingsParam.value_ == "false"
             ){
                 if(settingsParam.value_ == "true"){
-                    registry::Container::addElement<bool>(settingsParam.name_, true);
-                }else registry::Container::addElement<bool>(settingsParam.name_, false);
-            }else if(settingsParam.value_[0] == '[' && settingsParam.value_.find(",") != std::string::npos){
+                    registry::Container::addElement<bool>(
+                        settingsParam.name_, true);
+                }else registry::Container::addElement<bool>(
+                    settingsParam.name_, false);
+            }else if(settingsParam.value_[0] == '['
+                // && settingsParam.value_.find(",") != std::string::npos
+            ){
                 settingsParam.value_.erase(0, 1);
                 settingsParam.value_.erase(settingsParam.value_.size()-1, 1);
                 registry::Container::addElement<std::vector<std::string>>(

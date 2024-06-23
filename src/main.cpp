@@ -5,15 +5,12 @@ int main(){
     registry::ConfigReader configReader;
     configReader.loadConfigFile("settings_test.conf");
 
-    std::string name_params{"MIME_TYPES"};
+    std::string name_params{"PUBLIC_FILES"};
     auto data = registry::Container::getElement
-        <std::map<std::string, std::vector<std::string>>>(name_params);
+        <std::vector<std::string>>(name_params);
 
     for (auto &&i : data){
-        std::cout<< i.first << ": " << std::endl;
-        for (auto &&y : i.second){
-            std::cout<< "  " << y << std::endl;
-        }
+        std::cout<< i << std::endl;
     }
     if(data.empty()){
         std::cout<< "Is empty" << std::endl;
