@@ -1,5 +1,6 @@
 #ifndef C6F35E3E_DBD0_44B1_BDD9_771CB2E984FB
 #define C6F35E3E_DBD0_44B1_BDD9_771CB2E984FB
+/** Version 1 */
 
 /**
  *  __________________________________________
