@@ -21,31 +21,69 @@ registry::ReturnSettingsLine registry::ConfigReader::getContent(
 void registry::ConfigReader::initAtIntager(
     std::string name, std::string value
 ){
-    int int_type = ufn::strToInt(value);
-    if(ufn::has_error_in_converter_function == 2){
-        long long_type = ufn::strToLong(value);
-        if(ufn::has_error_in_converter_function == 2){
-            long long llong_type = ufn::strToLongLong(value);
-            if(ufn::has_error_in_converter_function == 2){
-                unsigned long ul_type = ufn::strToUnsignedLong(value);
-                if(ufn::has_error_in_converter_function == 2){
-                    unsigned long long ull_type = ufn::strToUnsignedLongLong(value);
-                    if(ufn::has_error_in_converter_function == 2){
-                        registry::Container::addElement<std::string>(name, value);
-                    }else{
-                        registry::Container::addElement<unsigned long long>(name, ull_type);
-                    }
-                }else{
-                    registry::Container::addElement<unsigned long>(name, ul_type);
-                }
-            }else{
-                registry::Container::addElement<long long>(name, llong_type);
-            }
-        }else{
-            registry::Container::addElement<long>(name, long_type);
+    std::string numeric_type = ufn::getNumericType(value);
+    if(!empty(numeric_type)){
+        value.erase(value.size() - numeric_type.size());
+        if(numeric_type == "U"){
+            registry::Container::addElement<unsigned int>(
+                name, ufn::strToUnsigned(value)
+            );
+        }else if(numeric_type == "UL"){
+            registry::Container::addElement<unsigned long>(
+                name, ufn::strToUnsignedLong(value)
+            );
+        }else if(numeric_type == "ULL"){
+            registry::Container::addElement<unsigned long long>(
+                name, ufn::strToUnsignedLongLong(value)
+            );
+        }else if(numeric_type == "LL"){
+            registry::Container::addElement<long long>(
+                name, ufn::strToLongLong(value)
+            );
+        }else if(numeric_type == "L"){
+            registry::Container::addElement<long>(
+                name, ufn::strToLong(value)
+            );
+        }else if(numeric_type == "I"){
+            registry::Container::addElement<int>(
+                name, ufn::strToInt(value)
+            );
+        }else if(numeric_type == "D"){
+            registry::Container::addElement<double>(
+                name, ufn::strToDouble(value)
+            );
+        }else if(numeric_type == "F"){
+            registry::Container::addElement<float>(
+                name, ufn::strToFloat(value)
+            );
         }
     }else{
-        registry::Container::addElement<int>(name, int_type);
+        int int_type = ufn::strToInt(value);
+        if(ufn::has_error_in_converter_function == 2){
+            long long_type = ufn::strToLong(value);
+            if(ufn::has_error_in_converter_function == 2){
+                long long llong_type = ufn::strToLongLong(value);
+                if(ufn::has_error_in_converter_function == 2){
+                    unsigned long ul_type = ufn::strToUnsignedLong(value);
+                    if(ufn::has_error_in_converter_function == 2){
+                        unsigned long long ull_type = ufn::strToUnsignedLongLong(value);
+                        if(ufn::has_error_in_converter_function == 2){
+                            registry::Container::addElement<std::string>(name, value);
+                        }else{
+                            registry::Container::addElement<unsigned long long>(name, ull_type);
+                        }
+                    }else{
+                        registry::Container::addElement<unsigned long>(name, ul_type);
+                    }
+                }else{
+                    registry::Container::addElement<long long>(name, llong_type);
+                }
+            }else{
+                registry::Container::addElement<long>(name, long_type);
+            }
+        }else{
+            registry::Container::addElement<int>(name, int_type);
+        }
     }
 }
 
@@ -223,9 +261,7 @@ void registry::ConfigReader::loadConfigFile(std::string settings_path){
                         settingsParam.name_, true);
                 }else registry::Container::addElement<bool>(
                     settingsParam.name_, false);
-            }else if(settingsParam.value_[0] == '['
-                // && settingsParam.value_.find(",") != std::string::npos
-            ){
+            }else if(settingsParam.value_[0] == '['){
                 settingsParam.value_.erase(0, 1);
                 settingsParam.value_.erase(settingsParam.value_.size()-1, 1);
                 registry::Container::addElement<std::vector<std::string>>(
@@ -233,10 +269,16 @@ void registry::ConfigReader::loadConfigFile(std::string settings_path){
                     ufn::exploed(settingsParam.value_, ",")
                 );
             }else if(ufn::isNumeric(settingsParam.value_)){
-                if(settingsParam.value_.find(".") != std::string::npos){
-                    initAtFractional(settingsParam.name_, settingsParam.value_);
+                if(settingsParam.value_
+                    .find(".") != std::string::npos
+                ){
+                    initAtFractional(
+                        settingsParam.name_, settingsParam.value_
+                    );
                 }else{
-                    initAtIntager(settingsParam.name_, settingsParam.value_);
+                    initAtIntager(
+                        settingsParam.name_, settingsParam.value_
+                    );
                 }
             }else{
                 registry::Container::addElement<std::string>(

@@ -1,5 +1,6 @@
 #ifndef FUNCTIONS_HPP
 #define FUNCTIONS_HPP
+/** Version 1.1 */
 
 /**
  *  __________________________________________
@@ -42,6 +43,7 @@
 #include <filesystem>
 #include <cmath>
 #include <cstring>
+#include <sys/stat.h>
 #include <boost/uuid/detail/md5.hpp>
 #include <boost/algorithm/hex.hpp>
 #include <boost/algorithm/string.hpp>
@@ -64,7 +66,8 @@ namespace hashes{
 */
 namespace ufn{
 
-    inline std::runtime_error error_in_function_create_file_and_dir("");
+    inline std::runtime_error
+        error_in_function_create_file_and_dir("");
     /**
      * @brief Сreate a file with parent directories
      * @author Tolsedum
@@ -72,7 +75,10 @@ namespace ufn{
      * @return If file is created then true else false and description
      *      in var error_in_function_create_file_and_dir
      */
-    bool createFileAndDirrs(std::string path, std::string content = "");
+    bool createFileAndDirrs(
+        std::string path,
+        std::string content = ""
+    );
 
     /**
      * Check upper register in string
@@ -99,6 +105,14 @@ namespace ufn{
         const std::string &x;
         template <typename Numeric> operator Numeric() { return 0;}
     };
+    /**
+     * @brief If a type is passed to a number with a
+     *  string type, it returns this type. It is advisable
+     *  to use it after isNumeric
+     * @param numeric
+     * @return numeric type if exists
+    */
+    std::string getNumericType(std::string numeric);
 
     /**
      * @brief Chekc if string is numeric
@@ -142,6 +156,17 @@ namespace ufn{
      * @author Tolsedum
      */
     float strToFloat(const std::string &number);
+
+    /**
+     * @brief String to unsigned
+     *      If has error then in has_error_in_int_function
+     *      set true and error description in hear error_in_int_function.
+     *
+     * @param number number by string format
+     * @return float
+     * @author Tolsedum
+     */
+    unsigned strToUnsigned(const std::string &number);
 
     /**
      * @brief String to long
@@ -196,7 +221,9 @@ namespace ufn{
      * @return long long
      * @author Tolsedum
      */
-    unsigned long long strToUnsignedLongLong(const std::string &number);
+    unsigned long long strToUnsignedLongLong(
+        const std::string &number
+    );
 
     /**
      * exploed string to vector conteiner
@@ -237,6 +264,28 @@ namespace ufn{
     */
     std::string currentDateTime(std::string format = "%d-%m-%Y %X");
 
+    unsigned long getFileCreationDate(
+        const std::string &file_name
+    );
+
+    std::string convertTimestampDateToString(
+        unsigned long &timestamp,
+        std::string format = "%Y-%m-%d %H:%M:%S" // 2019-08-22 10:55:23
+    );
+
+    /**
+    * @brief Convert string date to timestam
+    * @param date string date
+    * @param format date format
+    * @return unix time
+    */
+    unsigned long convertStringDateToTimestamp(
+        const std::string &date,
+        std::string format = "%Y-%m-%d %H:%M:%S" // 2019-08-22 10:55:23
+    );
+
+    std::string getParentDir(const std::string_view dir);
+
     /**
      * implode Template
      *  @author FGTS45
@@ -257,8 +306,7 @@ namespace ufn{
     */
     template<class TConteiner, class TValue>
     bool inArray (TConteiner array, TValue value){
-        return std::find(array.begin(), array.end(), value)
-            != array.end();
+        return std::find(array.begin(), array.end(), value) != array.end();
     }
  };
 #endif // !FUNCTIONS_HPP

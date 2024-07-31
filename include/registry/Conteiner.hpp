@@ -86,43 +86,69 @@ namespace registry{
 
     //*------------------ Template realization ----------------*/
     template<class Type>
-    inline bool Container::checkEmptyElements(std::string settings_key, Type value){
+    inline bool Container::checkEmptyElements(
+        std::string settings_key, Type value
+    ){
         return !settings_key.empty() && !value.empty();
     }
     template<>
-    inline bool Container::checkEmptyElements(std::string settings_key, bool){
+    inline bool Container::checkEmptyElements(
+        std::string settings_key, bool
+    ){
         return !settings_key.empty();
     }
     template<>
-    inline bool Container::checkEmptyElements(std::string settings_key, int){
+    inline bool Container::checkEmptyElements(
+        std::string settings_key, int
+    ){
         return !settings_key.empty();
     }
     template<>
-    inline bool Container::checkEmptyElements(std::string settings_key, long){
+    inline bool Container::checkEmptyElements(
+        std::string settings_key, unsigned int
+    ){
         return !settings_key.empty();
     }
     template<>
-    inline bool Container::checkEmptyElements(std::string settings_key, unsigned long){
+    inline bool Container::checkEmptyElements(
+        std::string settings_key, long
+    ){
         return !settings_key.empty();
     }
     template<>
-    inline bool Container::checkEmptyElements(std::string settings_key, long long){
+    inline bool Container::checkEmptyElements(
+        std::string settings_key, unsigned long
+    ){
         return !settings_key.empty();
     }
     template<>
-    inline bool Container::checkEmptyElements(std::string settings_key, unsigned long long){
+    inline bool Container::checkEmptyElements(
+        std::string settings_key, long long
+    ){
         return !settings_key.empty();
     }
     template<>
-    inline bool Container::checkEmptyElements(std::string settings_key, float){
+    inline bool Container::checkEmptyElements(
+        std::string settings_key, unsigned long long
+    ){
         return !settings_key.empty();
     }
     template<>
-    inline bool Container::checkEmptyElements(std::string settings_key, double){
+    inline bool Container::checkEmptyElements(
+        std::string settings_key, float
+    ){
         return !settings_key.empty();
     }
     template<>
-    inline bool Container::checkEmptyElements(std::string settings_key, long double){
+    inline bool Container::checkEmptyElements(
+        std::string settings_key, double
+    ){
+        return !settings_key.empty();
+    }
+    template<>
+    inline bool Container::checkEmptyElements(
+        std::string settings_key, long double
+    ){
         return !settings_key.empty();
     }
 
