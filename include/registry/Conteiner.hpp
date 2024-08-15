@@ -1,6 +1,6 @@
 #ifndef C6F35E3E_DBD0_44B1_BDD9_771CB2E984FB
 #define C6F35E3E_DBD0_44B1_BDD9_771CB2E984FB
-/** Version 1 */
+/** Version 1.1 */
 
 /**
  *  __________________________________________
@@ -56,7 +56,7 @@ namespace registry{
         /**
          * @brief Non-erasable data
          */
-        static std::array<std::string, 3> noeraseble_data;
+        // static std::array<std::string, 3> noeraseble_data;
 
         template<class Type>
         static bool checkEmptyElements(std::string settings_key, Type value);
@@ -166,9 +166,14 @@ namespace registry{
         return ret_value;
     }
 
-    template <class T>
+   template <class T>
     inline const T& Container::getElement(std::string settings_key){
         auto search = conteiner_<T>.find(settings_key);
+        if(search == conteiner_<T>.end()){
+            T obj{};
+            conteiner_<T>[settings_key] = obj;
+            return conteiner_<T>[settings_key];
+        }
         return search->second;
     }
 

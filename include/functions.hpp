@@ -1,6 +1,6 @@
 #ifndef FUNCTIONS_HPP
 #define FUNCTIONS_HPP
-/** Version 1.1 */
+/** Version 1.2 */
 
 /**
  *  __________________________________________
@@ -262,7 +262,9 @@ namespace ufn{
      * Get the currant date using the format
      * @author Tolsedum
     */
-    std::string currentDateTime(std::string format = "%d-%m-%Y %X");
+    std::string currentDateTime(
+        std::string format = "%Y-%m-%d %H:%M:%S");// 2019-08-22 10:55:23
+
 
     unsigned long getFileCreationDate(
         const std::string &file_name
