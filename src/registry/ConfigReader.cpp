@@ -263,10 +263,19 @@ void registry::ConfigReader::loadConfigFile(std::string settings_path){
                     settingsParam.name_, false);
             }else if(settingsParam.value_[0] == '['){
                 settingsParam.value_.erase(0, 1);
-                settingsParam.value_.erase(settingsParam.value_.size()-1, 1);
+                settingsParam.value_.erase(
+                    settingsParam.value_.size()-1, 1
+                );
+
                 registry::Container::addElement<std::vector<std::string>>(
                     settingsParam.name_,
-                    ufn::exploed(settingsParam.value_, ",")
+                    ufn::explode(
+                        settingsParam.value_,
+                        ",",
+                        [](std::string &str){
+                            str = ufn::trim(str, ' ');
+                        }
+                    )
                 );
             }else if(ufn::isNumeric(settingsParam.value_)){
                 if(settingsParam.value_

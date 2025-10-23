@@ -52,6 +52,7 @@ public:
 };
 
 int main(){
+
     registry::ConfigReader configReader;
     configReader.loadConfigFile("settings_test.conf");
     std::cout
@@ -60,8 +61,8 @@ int main(){
                 <unsigned long>
                 ("FILE_LINE_COUNT")
     << std::endl;
-    std::string str{"FILE_LINE_COUNT=1000UL#sdfdsf"};
-    std::cout<< ufn::deleteComment(str) << std::endl;
+    // std::string str{"FILE_LINE_COUNT=1000UL#sdfdsf"};
+    // std::cout<< ufn::deleteComment(str) << std::endl;
 
     // Service::pushInLog();
 
