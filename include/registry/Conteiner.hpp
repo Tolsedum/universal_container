@@ -1,6 +1,6 @@
 #ifndef C6F35E3E_DBD0_44B1_BDD9_771CB2E984FB
 #define C6F35E3E_DBD0_44B1_BDD9_771CB2E984FB
-/** Version 1.1 */
+/** Version 2.0 */
 
 /**
  *  __________________________________________
@@ -34,6 +34,7 @@
  * |__________________________________________|
  */
 
+#include <map>
 #include "functions.hpp"
 
 namespace registry{

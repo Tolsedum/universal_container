@@ -21,52 +21,52 @@ registry::ReturnSettingsLine registry::ConfigReader::getContent(
 void registry::ConfigReader::initAtIntager(
     std::string name, std::string value
 ){
-    std::string numeric_type = ufn::getNumericType(value);
+    std::string numeric_type = ufn::get_numeric_type(value);
     if(!empty(numeric_type)){
         value.erase(value.size() - numeric_type.size());
         if(numeric_type == "U"){
             registry::Container::addElement<unsigned int>(
-                name, ufn::strToUnsigned(value)
+                name, ufn::str_to_unsigned(value)
             );
         }else if(numeric_type == "UL"){
             registry::Container::addElement<unsigned long>(
-                name, ufn::strToUnsignedLong(value)
+                name, ufn::str_to_unsigned_long(value)
             );
         }else if(numeric_type == "ULL"){
             registry::Container::addElement<unsigned long long>(
-                name, ufn::strToUnsignedLongLong(value)
+                name, ufn::str_to_unsigned_long_long(value)
             );
         }else if(numeric_type == "LL"){
             registry::Container::addElement<long long>(
-                name, ufn::strToLongLong(value)
+                name, ufn::str_to_long_long(value)
             );
         }else if(numeric_type == "L"){
             registry::Container::addElement<long>(
-                name, ufn::strToLong(value)
+                name, ufn::str_to_long(value)
             );
         }else if(numeric_type == "I"){
             registry::Container::addElement<int>(
-                name, ufn::strToInt(value)
+                name, ufn::str_to_int(value)
             );
         }else if(numeric_type == "D"){
             registry::Container::addElement<double>(
-                name, ufn::strToDouble(value)
+                name, ufn::str_to_double(value)
             );
         }else if(numeric_type == "F"){
             registry::Container::addElement<float>(
-                name, ufn::strToFloat(value)
+                name, ufn::str_to_float(value)
             );
         }
     }else{
-        int int_type = ufn::strToInt(value);
+        int int_type = ufn::str_to_int(value);
         if(ufn::has_error_in_converter_function == 2){
-            long long_type = ufn::strToLong(value);
+            long long_type = ufn::str_to_long(value);
             if(ufn::has_error_in_converter_function == 2){
-                long long llong_type = ufn::strToLongLong(value);
+                long long llong_type = ufn::str_to_long_long(value);
                 if(ufn::has_error_in_converter_function == 2){
-                    unsigned long ul_type = ufn::strToUnsignedLong(value);
+                    unsigned long ul_type = ufn::str_to_unsigned_long(value);
                     if(ufn::has_error_in_converter_function == 2){
-                        unsigned long long ull_type = ufn::strToUnsignedLongLong(value);
+                        unsigned long long ull_type = ufn::str_to_unsigned_long_long(value);
                         if(ufn::has_error_in_converter_function == 2){
                             registry::Container::addElement<std::string>(name, value);
                         }else{
@@ -90,11 +90,11 @@ void registry::ConfigReader::initAtIntager(
 void registry::ConfigReader::initAtFractional(
     std::string name, std::string value
 ){
-    float float_type = ufn::strToFloat(value);
+    float float_type = ufn::str_to_float(value);
     if(ufn::has_error_in_converter_function == 2){
-        double double_type = ufn::strToDouble(value);
+        double double_type = ufn::str_to_double(value);
         if(ufn::has_error_in_converter_function == 2){
-            long double long_double_type = ufn::strToLongDouble(value);
+            long double long_double_type = ufn::str_to_long_double(value);
             if(ufn::has_error_in_converter_function == 2){
                 registry::Container::addElement<std::string>(name, value);
             }else{
@@ -138,7 +138,7 @@ void registry::ConfigReader::initAtMapContainer(
             }
             continue;
         }
-        if(!ufn::inArray
+        if(!ufn::in_array
             <std::vector<char>, char>({'\n', '\r', ' '}, c)
         ){
             if(set_value){
@@ -181,7 +181,7 @@ void registry::ConfigReader::initAtMap(
             set_value = false;
             continue;
         }
-        if(!ufn::inArray
+        if(!ufn::in_array
             <std::vector<char>, char>({'\n', '\r', ' '}, c)
         ){
             if(set_value){
@@ -209,7 +209,7 @@ void registry::ConfigReader::loadConfigFile(std::string settings_path){
         bool is_map = false;
         std::string content_settings;
         while (getline(i_file, line)){
-            line = ufn::deleteComment(line);
+            line = ufn::delete_comment(line);
             if (line.empty()){
                 continue;
             }
@@ -273,11 +273,11 @@ void registry::ConfigReader::loadConfigFile(std::string settings_path){
                         settingsParam.value_,
                         ",",
                         [](std::string &str){
-                            str = ufn::trim(str, ' ');
+                            str = ufn::trim(str, " ");
                         }
                     )
                 );
-            }else if(ufn::isNumeric(settingsParam.value_)){
+            }else if(ufn::is_numeric(settingsParam.value_)){
                 if(settingsParam.value_
                     .find(".") != std::string::npos
                 ){
